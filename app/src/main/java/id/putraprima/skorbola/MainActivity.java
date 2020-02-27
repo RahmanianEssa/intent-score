@@ -17,23 +17,21 @@ import android.widget.Toast;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int GALERY_REQUEST_CODE_HOME = 1;
-    public static final int GALERY_REQUEST_CODE_AWAY =2;
-
+    public static final int GALERY_REQUEST_CODE = 1&2;
     public static final String TAG = MainActivity.class.getCanonicalName();
 
     public static final String HOMETEAM_KEY = "home";
     public static final String AWAYTEAM_KEY = "away";
-    public static final String IMAGEHOME_KEY = "imagehome";
-    public static final String IMAGEAWAY_KEY = "imageaway";
+//    public static final String IMAGEHOME_KEY = "imagehome";
+//    public static final String IMAGEAWAY_KEY = "imageaway";
 
 
     private EditText homeTeam;
     private EditText awayTeam;
     private ImageView imageHome;
     private ImageView imageAway;
-    private Bitmap bitmap1;
-    private Bitmap bitmap2;
+    private Bitmap bmp1;
+    private Bitmap bmp2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,19 +56,31 @@ public class MainActivity extends AppCompatActivity {
         String home = homeTeam.getText().toString();
         String away = awayTeam.getText().toString();
 
-        if ((home).equals("") || (away).equals("")) {
-            Toast.makeText(this, "MOHON ISI DATA", Toast.LENGTH_SHORT).show();
-        } else {
+
+        if ((home).equals("") || (away).equals("") ||(imageHome).equals("") || (imageAway).equals("") || bmp1 == null || bmp2 == null ){
+            Toast.makeText(this, "Data tidak boleh kosong", Toast.LENGTH_SHORT).show();
+        }else {
+            imageHome.setDrawingCacheEnabled(true);
+            Bitmap bmp1 = imageHome.getDrawingCache();
+            imageAway.setDrawingCacheEnabled(true);
+            Bitmap bmp2 = imageAway.getDrawingCache();
+
             Intent intent = new Intent(this, MatchActivity.class);
+
             intent.putExtra(HOMETEAM_KEY, home);
             intent.putExtra(AWAYTEAM_KEY, away);
-            imageHome.buildDrawingCache();
-            imageAway.buildDrawingCache();
-            Bitmap homeImage = imageHome.getDrawingCache();
-            Bitmap awayImage = imageAway.getDrawingCache();
-            Bundle extra = new Bundle();
-            extra.putParcelable(IMAGEHOME_KEY,homeImage);
-            extra.putParcelable(IMAGEAWAY_KEY,awayImage);
+            intent.putExtra("Bitmap", bmp1);
+            intent.putExtra("Bitmap", bmp2);
+
+//            imageHome.buildDrawingCache();
+//            imageAway.buildDrawingCache();
+//
+//            Bitmap homeImage = imageHome.getDrawingCache();
+//            Bitmap awayImage = imageAway.getDrawingCache();
+//
+//            Bundle extra = new Bundle();
+//            extra.putParcelable(IMAGEHOME_KEY,homeImage);
+//            extra.putParcelable(IMAGEAWAY_KEY,awayImage);
             startActivity(intent);
         }
     }
@@ -96,8 +106,8 @@ public class MainActivity extends AppCompatActivity {
             if (data != null) {
                 try {
                     Uri imageUri = data.getData();
-                    bitmap1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    imageHome.setImageBitmap(bitmap1);
+                    bmp1 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    imageHome.setImageBitmap(bmp1);
                 } catch (IOException e) {
                     Toast.makeText(this, "Can't load image", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, e.getMessage());
@@ -108,8 +118,8 @@ public class MainActivity extends AppCompatActivity {
             if (data != null) {
                 try {
                     Uri imageUri = data.getData();
-                    bitmap2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                    imageAway.setImageBitmap(bitmap2);
+                    bmp2 = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+                    imageAway.setImageBitmap(bmp2);
                 } catch (IOException e) {
                     Toast.makeText(this, "Can't load image", Toast.LENGTH_SHORT).show();
                     Log.e(TAG, e.getMessage());

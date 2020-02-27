@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class MatchActivity extends AppCompatActivity {
 
-    private static final String RESULT_KEY = "result";
+    private static final String HASIL_KEY = "hasil";
     private TextView homeText;
     private TextView awayText;
     private ImageView imageHome;
@@ -33,16 +33,31 @@ public class MatchActivity extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
+            String home = extras.getString(MainActivity.HOMETEAM_KEY);
+            homeText.setText(home);
 
-            Bundle extra = getIntent().getExtras();
-            Bitmap bmp = extra.getParcelable("imageHome");
-            Bitmap bmp2 = extra.getParcelable("imageAway");
+            String away = extras.getString(MainActivity.AWAYTEAM_KEY);
+            awayText.setText(away);
 
+            Bitmap bmp1=(Bitmap) extras.get("Bitmap");
+            imageHome.setImageBitmap(bmp1);
 
-            homeText.setText(extras.getString(MainActivity.HOMETEAM_KEY));
-            awayText.setText(extras.getString(MainActivity.AWAYTEAM_KEY));
-            imageHome.setImageBitmap(bmp);
+            Bitmap bmp2 =(Bitmap) extras.get("Bitmap");
             imageAway.setImageBitmap(bmp2);
+
+
+//            Bundle extra = getIntent().getExtras();
+//            Bitmap bmp = extra.getParcelable("imageHome");
+//            Bitmap bmp2 = extra.getParcelable("imageAway");
+//
+//            String home = extras.getString(MainActivity.HOMETEAM_KEY);
+//            homeText.setText(home);
+
+//            String away = extras.getString(MainActivity.AWAYTEAM_KEY);
+//            awayText.setText(away);
+
+//            imageHome.setImageBitmap(bmp);
+//            imageAway.setImageBitmap(bmp2);
 
 
             //TODO
@@ -72,16 +87,16 @@ public class MatchActivity extends AppCompatActivity {
     }
 
     public void handlecek(View view) {
-        String result=null;
+        String hasil=null;
         if (skorHome==skorAway){
-            result ="Draw";
+            hasil ="Draw";
         }else if(skorHome>skorAway){
-            result = homeText.getText().toString();
+            hasil = homeText.getText().toString();
         }else if (skorAway>skorHome){
-            result = awayText.getText().toString();
+            hasil = awayText.getText().toString();
         }
         Intent intent = new Intent(this, ResultActivity.class);
-        intent.putExtra(RESULT_KEY, result);
+        intent.putExtra(HASIL_KEY, hasil);
         startActivity(intent);
     }
 }
