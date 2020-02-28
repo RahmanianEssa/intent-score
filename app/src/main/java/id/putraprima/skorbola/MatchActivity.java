@@ -39,10 +39,10 @@ public class MatchActivity extends AppCompatActivity {
             String away = extras.getString(MainActivity.AWAYTEAM_KEY);
             awayText.setText(away);
 
-            Bitmap bmp1=(Bitmap) extras.get("Bitmap");
+            Bitmap bmp1=(Bitmap) extras.get("imagehome");
             imageHome.setImageBitmap(bmp1);
 
-            Bitmap bmp2 =(Bitmap) extras.get("Bitmap");
+            Bitmap bmp2 =(Bitmap) extras.get("imageaway");
             imageAway.setImageBitmap(bmp2);
 
 
